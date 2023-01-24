@@ -9,5 +9,4 @@ func TestGreet(t *testing.T) {
 	if greeting != expectedGreeting {
 		t.Errorf("expected: %q, got: %q", greeting, expectedGreeting)
 	}
-	// Output: Hello, World!
 }
