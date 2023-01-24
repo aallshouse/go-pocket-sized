@@ -2,42 +2,70 @@ package main
 
 import "testing"
 
-func TestGreet_English(t *testing.T) {
-	lang := "en"
-	expectedGreeting := "Hello, World!"
-	greeting := greet(language(lang))
-
-	if greeting != expectedGreeting {
-		t.Errorf("expected: %q, got: %q", greeting, expectedGreeting)
+func TestGreet(t *testing.T) {
+	type testCase struct {
+		lang             language
+		expectedGreeting string
 	}
-}
 
-func TestGreet_Spanish(t *testing.T) {
-	lang := "es"
-	expectedGreeting := "Hola, Mundo!"
-	greeting := greet(language(lang))
-
-	if greeting != expectedGreeting {
-		t.Errorf("expected: %q, got: %q", greeting, expectedGreeting)
+	var tests = map[string]testCase{
+		"English": {
+			lang:             "en",
+			expectedGreeting: "Hello, World!",
+		},
+		"French": {
+			lang:             "fr",
+			expectedGreeting: "Bonjour, le monde!",
+		},
+		"Akkadian, not supported": {
+			lang:             "akk",
+			expectedGreeting: `unsupported language: "akk"`,
+		},
+		"Greek": {
+			lang:             "el",
+			expectedGreeting: "Χαίρετε Κόσμε!",
+		},
+		"Hebrew": {
+			lang:             "he",
+			expectedGreeting: "שלום עולם!",
+		},
+		"Urdu": {
+			lang:             "ur",
+			expectedGreeting: "ہیلو دنیا",
+		},
+		"Vietnamese": {
+			lang:             "vi",
+			expectedGreeting: "Xin chào Thế Giới",
+		},
+		"Chinese": {
+			lang:             "zh",
+			expectedGreeting: "你好，世界！",
+		},
+		"Spanish": {
+			lang:             "es",
+			expectedGreeting: "Hola, Mundo!",
+		},
+		"Italian": {
+			lang:             "it",
+			expectedGreeting: "Ciao, mondo!",
+		},
+		"Japanese": {
+			lang:             "ja",
+			expectedGreeting: "こんにちは世界!",
+		},
+		"Empty": {
+			lang:             "",
+			expectedGreeting: `unsupported language: ""`,
+		},
 	}
-}
 
-func TestGreet_French(t *testing.T) {
-	lang := "fr"
-	expectedGreeting := "Bonjour, le monde!"
-	greeting := greet(language(lang))
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			greeting := greet(tc.lang)
 
-	if greeting != expectedGreeting {
-		t.Errorf("expected: %q, got: %q", greeting, expectedGreeting)
-	}
-}
-
-func TestGreet_Akkadian(t *testing.T) {
-	lang := "akk"
-	expectedGreeting := ""
-	greeting := greet(language(lang))
-
-	if greeting != expectedGreeting {
-		t.Errorf("expected: %q, got: %q", greeting, expectedGreeting)
+			if greeting != tc.expectedGreeting {
+				t.Errorf("expected: %q, got: %q", tc.expectedGreeting, greeting)
+			}
+		})
 	}
 }
